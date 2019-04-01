@@ -1,0 +1,121 @@
+﻿@using simchas.data
+@using simchas.Models
+@model DisplayContributorViewModel
+
+<div>
+    <h1>Contributors</h1>
+</div>
+
+<div>
+    <button id="new-contributor" class="btn btn-danger">New Contributor</button>
+</div>
+
+<div class="col-md-offset-9">
+    <h3>Total: @Model.TotalBalance.ToString("C")</h3>
+</div>
+
+<div>
+    <table class="table table-bordered" id="contributor-table">
+        <tr>
+            <th>Deposit</th>
+            <th>Name</th>
+            <th>Cell</th>
+            <th>Balance</th>
+            <th>Always Include</th>
+            <th>Actions</th>
+        </tr>
+        @if (Model != null)
+        {
+            foreach (Contributor c in Model.Contributors)
+            {
+                <tr>
+                    <td><button class="btn btn-success deposit" data-id="@c.Id">Deposit</button></td>
+                    <td>@c.FirstName @c.LastName</td>
+                    <td>@c.CellNumber</td>
+                    <td>@c.Balance.ToString("C")</td>
+                    <td><span class="@(c.AlwaysJoin ? "glyphicon glyphicon-ok" : "glyphicon glyphicon-remove")"></span></td>
+                    <td>
+                        <a href="/contributors/history?id=@c.Id" class="btn btn-default">History</a>
+                        <button class="btn btn-warning editContributor" data-id="@c.Id" data-firstname="@c.FirstName" data-lastname="@c.LastName" data-cellnumber="@c.CellNumber" data-datejoined="@c.DateJoined.ToString("yyyy-MM-dd")" data-alwaysjoin="@c.AlwaysJoin">Edit</button>
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+</div>
+
+<div class="modal col-md-4 col-md-offset-3" id="addContributorModal">
+
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">
+                <span aria-hidden="true">×</span>
+                <span class="sr-only">Close</span>
+            </button>
+            <h4 class="modal-title" id="myModalLabel">New Contributor</h4>
+        </div>
+        <div class="modal-body">
+            <form method="post" action="/contributors/addContributor">
+                <input type="text" placeholder="First Name" name="FirstName" class="form-control" />
+                <input type="text" placeholder="Last Name" name="LastName" class="form-control" />
+                <input type="text" placeholder="Cell Number" name="CellNumber" class="form-control" />
+                <input type="text" placeholder="Initial Deposit" name="Amount" class="form-control" />
+                <input type="date" name="DateJoined" class="form-control" />
+                <input type="checkbox" name="AlwaysJoin" value="true" />Always Include<br>
+                <button class="btn btn-danger">Add Contributor</button>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal col-md-4 col-md-offset-3" id="addDepositModal">
+
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">
+                <span aria-hidden="true">×</span>
+                <span class="sr-only">Close</span>
+            </button>
+            <h4 class="modal-title" id="myModalLabel">Add Deposit</h4>
+        </div>
+        <div class="modal-body">
+            <form method="post" action="/contributors/addDeposit">
+                <input type="text" placeholder="Amount" name="Amount" class="form-control" />
+                <input type="date" name="Date" class="form-control" />
+                <input type="hidden" name="ContributorId" id="contributorId" />
+                <button class="btn btn-danger">Add Deposit</button>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal col-md-4 col-md-offset-3" id="editContributorModal">
+
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">
+                <span aria-hidden="true">×</span>
+                <span class="sr-only">Close</span>
+            </button>
+            <h4 class="modal-title" id="myModalLabel">Edit Contributor</h4>
+        </div>
+        <div class="modal-body">
+            <form method="post" action="/contributors/editContributor">
+                <input type="text" placeholder="First Name" name="FirstName" class="form-control" id="firstName" />
+                <input type="text" placeholder="Last Name" name="LastName" class="form-control" id="lastName" />
+                <input type="text" placeholder="Cell Number" name="CellNumber" class="form-control" id="cellNumber" />
+                <input type="date" name="DateJoined" class="form-control" id="dateJoined"/>
+                <input type="checkbox" name="AlwaysJoin" value="true" id="alwaysJoin"/><label>Always Include </label><br />
+                <input type="hidden" name="Id" id="contributorIdModal"/>
+                <button class="btn btn-danger">Update Contributor</button>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+@section scripts {
+    <script src="/Scripts/index.js"></script>
+}
