@@ -38,7 +38,7 @@
         $("#contributorIdModal").val(id);
         $("#cellNumber").val(cellNumber);
         $("#dateJoined").val(dateJoined);
-        if (alwaysJoin == "True") {
+        if (alwaysJoin === "True") {
             $("#alwaysJoin").prop('checked', true);
         }
         else {

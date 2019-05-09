@@ -348,6 +348,7 @@ namespace simchas.data
             {
                 if (sc.Contributed)
                 {
+                    cmd.Parameters.Clear();
                     cmd.Parameters.AddWithValue("@contributorId", sc.ContributorId);
                     cmd.Parameters.AddWithValue("@amount", sc.Amount);
                     cmd.Parameters.AddWithValue("@simchaId", simchaId);
